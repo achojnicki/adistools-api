@@ -1,5 +1,0 @@
-class mongo:
-    host='debian-dev'
-    port=27017
-
-    db='adistools'
