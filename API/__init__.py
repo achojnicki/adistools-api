@@ -34,7 +34,7 @@ class API(Endpoints):
         self._config=config
 
         self._log=adislog(
-            backends=['terminal_table'],
+            backends=['terminal'],
             debug=True,
             replace_except_hook=False,
             )
