@@ -9,11 +9,11 @@ class Auth:
         
     def login(self, user_email:str, password_hash:str, **kwargs):
         user=self._db.get_user_by_user_email(user_email=user_email)
-        session=self._db.get_session_by_user_email(user_email=user['user_email'])
-        
-        
+                
         if not user:
             return False
+        
+        session=self._db.get_session_by_user_email(user_email=user['user_email'])
         
         if password_hash==user['password_hash']:
             self._log.success(

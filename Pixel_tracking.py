@@ -1,4 +1,3 @@
-
 class Pixel_tracking:
     def __init__(self, root):
         self._root=root
@@ -6,18 +5,27 @@ class Pixel_tracking:
         
         self._db=self._root._db
     
-    def pixel_trackers(self, **kwargs):
-        trackers=self._db.get_pixel_trackers()
-        return trackers
-    
-    def pixel_tracker(self, tracker_uuid:str, **kwargs):
+    def get_pixel_tracker(self, tracker_uuid:str, **kwargs):
         tracker=self._db.get_pixel_tracker(
             tracker_uuid=tracker_uuid
             )
+        del tracker['_id']
+
         return tracker
+
+    def get_pixel_trackers(self, **kwargs):
+        trackers=self._db.get_pixel_trackers()
+        for tracker in trackers:
+            del tracker['_id']
+
+        return trackers
     
     def get_metrics(self, tracker_uuid:str, **kwargs):
         metrics=self._db.get_metrics(
             tracker_uuid=tracker_uuid
             )
+
+        for metric in metrics:
+            del metric['_id']
+        
         return metrics

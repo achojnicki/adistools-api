@@ -3,14 +3,13 @@ from DB import DB
 from Auth import Auth
 from Message import Message
 from Pixel_tracking import Pixel_tracking
-
 from API.Endpoints import Endpoints
 
 #external modules
+from adisconfig import adisconfig
 from adislog import adislog
 from flask import Response
 
-import config
 import inspect
 
 
@@ -20,18 +19,16 @@ class ArgsCheckException(Exception):
 class MissingField(ArgsCheckException):
     pass
 
-class WrongTypeForArg(ArgsCheckException):
-    pass
 
 class API(Endpoints):
-    _config=config
+    _config=None
     _db=None
     _log=None
     _auth=None
     _pixel_tracking=None
 
     def __init__(self):
-        self._config=config
+        self._config=adisconfig('/etc/adistools-api/config.yaml')
 
         self._log=adislog(
             backends=['terminal'],
@@ -48,81 +45,93 @@ class API(Endpoints):
             self.logout,
             self.pixel_tracker,
             self.pixel_trackers,
+            self.metrics
             ]
 
 
-    def caller(self, target, args):        
-        #checking exist
+    def caller(self, target, args):      
+        """Caller function - all the valid traffic goes through this method"""
+        #check if all required params are present. Otherwise raise exception.
         try:
+            
             self._check_required_args(target, args)
         
         except MissingField as e:
             msg=Message()
-            msg.type="Error"
+            msg.status="Error"
             msg.message="Missing POST args for this request."
             msg.data['missing_fields']=e.missing_fields
             
-            return msg.__str__()
-        
-                        
-        if self._check_if_login_is_required(target):
+            return Response(
+                msg.__str__().encode('utf-8', errors='replace'),
+                mimetype="application/json"
+                )
 
+        #check if the endpoint require login. If so check if the session_uuid were provided and check existance of the session in the DB
+        if self._check_if_login_is_required(target):
+            print('checking login requiments')
             if not self._db.session_exists(args['session_uuid']):
                 msg=Message()
-                msg.type='Error'
+                msg.status='Error'
                 msg.message='This endpoint do require valid session.'
             
-                return msg.__str__()
+                return Response(
+                   msg.__str__().encode('utf-8', errors='replace'),
+                   mimetype="application/json"
+                   )
         
-        
+        #call tthe desired endpoint
         return Response(
             target(**args).__str__().encode('utf-8', errors='replace'),
             mimetype="application/json"
             )
     
-    def _check_if_login_is_required(self, endpoint):
-        if endpoint in self._endpoints_with_required_login:
+    def _check_if_login_is_required(self, target):
+        if target in self._endpoints_with_required_login:
             return True
         return False
-    
-    def _check_args_types(self, caller, params):
-        #TODO: finish it
-        sig=inspect.signature(caller)
-        
-        wrong_types={}
-        
-        for param in sig.parameters:
-            if sig.parameters[param].annotation!=inspect._empty:
-                if type(params[param]) is not sig.parameters[param].annotation:
-                    wrong_types[param]={'expected':param.annotation, 'got':type(params[param])}
-        
-        if len(wrong_types)>0:
-            exception=WrongTypeForArg()
-            exception.wrong_types=wrong_types
-            
-            raise exception
                 
-    def _check_required_args(self, caller, avaiable_params):        
-        sig=inspect.signature(caller)
+    def _check_required_args(self, target, avaiable_params):
+
+        sig=inspect.signature(target)
         required_params=[]
         
+        #iterate trought the definitions of the endpoint to find out required arguments
         for param in sig.parameters:
             if sig.parameters[param].default is inspect._empty:
                 required_params.append(param)
-                
+        
+        #checking if the target is in the list of endpoints, which require valid session. if so adding the session_uuid param to the required list
+        if self._check_if_login_is_required(target) and 'session_uuid' not in required_params:
+            required_params.append('session_uuid')
+
+        #checking if the kwargs is in the missing_poarams list. if so remove it.
         missing_params=required_params.copy()
         if 'kwargs' in missing_params:
             del missing_params[missing_params.index('kwargs')]
         
+        #iterating trought the required params and checking if it is in avaiable params. if so then removing it form missing_params list.
         for param in required_params:
             if param in avaiable_params:
                 del missing_params[missing_params.index(param)]
 
-        
+        #checking if the list of missing params is empty. if not raising exception.
         if len(missing_params)>0:
             exception=MissingField()
             exception.missing_fields=missing_params
             
             raise exception
-        
     
+    def error(self, error):
+        """handler for the error pages"""
+        msg=Message()
+
+        msg.status='Error'
+        msg.http_code=error.code
+        msg.message=error.description
+        
+        return Response(
+            msg.__str__().encode('utf-8', errors='replace'),
+            mimetype="application/json",
+            status=error.code
+        )
