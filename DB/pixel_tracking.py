@@ -19,19 +19,6 @@ class pixel_tracking:
 
         return trackers
     
-    def create_pixel_tracker(self, owner:str, tracker_uuid:str):
-        document={
-            "owner":owner,
-            "tracker_uuid":tracker_uuid
-            }
-        
-        try:
-            self._pixel_trackers.insert_one(document)
-
-            return True
-        except:
-            return False
-    
     def get_metrics(self, tracker_uuid:str):
         query={"tracker_uuid": tracker_uuid}
         
@@ -41,4 +28,18 @@ class pixel_tracking:
             metrics.append(item)
 
         return metrics
-            
+    
+    def create_pixel_tracker(self, user_uuid:str, tracker_uuid:str, title: str, description: str):
+        document={
+            "user_uuid"   : user_uuid,
+            "tracker_uuid": tracker_uuid,
+            "title"       : title,
+            "description" : description,
+            }
+        
+        try:
+            self._pixel_trackers.insert_one(document)
+
+            return True
+        except:
+            return False     

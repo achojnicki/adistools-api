@@ -11,16 +11,13 @@ application.config['TRAP_HTTP_EXCEPTIONS']=True
 def login():
     return api.caller(api.login, request.form)
 
-
 @application.route('/api/auth/logout',methods=['POST'])
 def logout():
     return api.caller(api.logout, request.form) 
 
-
 @application.route('/api/pixel_tracking/trackers',methods=["POST"])
 def trackers():
     return api.caller(api.pixel_trackers, request.form)
-
 
 @application.route('/api/pixel_tracking/tracker',methods=["POST"])
 def tracker():

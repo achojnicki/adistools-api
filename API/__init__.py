@@ -80,7 +80,7 @@ class API(Endpoints):
                    mimetype="application/json"
                    )
         
-        #call tthe desired endpoint
+        #call the endpoint
         return Response(
             target(**args).__str__().encode('utf-8', errors='replace'),
             mimetype="application/json"
