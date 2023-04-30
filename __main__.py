@@ -1,5 +1,4 @@
 from API import API
-from adislog import adislog
 from flask import Flask, request
 from json import loads
 

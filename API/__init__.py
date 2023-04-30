@@ -28,7 +28,7 @@ class API(Endpoints):
     _pixel_tracking=None
 
     def __init__(self):
-        self._config=adisconfig('/etc/adistools-api/config.yaml')
+        self._config=adisconfig('/etc/adistools/api.yaml')
 
         self._log=adislog(
             backends=['terminal'],
