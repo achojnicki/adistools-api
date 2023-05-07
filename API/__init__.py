@@ -48,7 +48,10 @@ class API(Endpoints):
             self.pixel_tracker,
             self.pixel_trackers,
             self.pixel_tracker_metrics,
-            self.shortened_urls
+            self.shortened_url,
+            self.shortened_urls,
+            self.shortened_url_metrics
+
             ]
 
 
