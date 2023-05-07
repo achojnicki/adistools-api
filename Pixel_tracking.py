@@ -20,8 +20,8 @@ class Pixel_tracking:
 
         return trackers
     
-    def get_metrics(self, tracker_uuid:str, **kwargs):
-        metrics=self._db.get_metrics(
+    def get_pixel_metrics(self, tracker_uuid:str, **kwargs):
+        metrics=self._db.get_pixel_metrics(
             tracker_uuid=tracker_uuid
             )
 

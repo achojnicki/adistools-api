@@ -36,40 +36,42 @@ class Endpoints:
         
         return msg
     
-    
-    
     def pixel_trackers(self, **kwargs):
         msg=Message()
-        trackers=self._pixel_tracking.get_pixel_trackers()
-        msg.status="Success"
-        msg.message="Trackers"
-        
-        for a in trackers:
-            msg.data[a['tracker_uuid']]=a
-        
+        try:
+            trackers=self._pixel_tracking.get_pixel_trackers()
+            msg.status="Success"
+            msg.message="Trackers"
+            for a in trackers:
+                msg.data[a['tracker_uuid']]=a
+        except:
+            msg.status="Error"
+            msg.message="Unable to obtain tracker"
+
         return msg
     
     def pixel_tracker(self, tracker_uuid:str, **kwargs):
         msg=Message()
-        tracker=self._pixel_tracking.get_pixel_tracker(
-            tracker_uuid=tracker_uuid
-            )
+        try:
+            tracker=self._pixel_tracking.get_pixel_tracker(
+                tracker_uuid=tracker_uuid
+                )
         
-        if tracker:            
             msg.status='Success'
             msg.message='Tracker'
             msg.data[tracker['tracker_uuid']]=tracker
-        else:
+ 
+        except:
             msg.status="Error"
-            msg.message="Tracker doesn't exists"
+            msg.message="Unable to obtain tracker details"
 
         return msg
 
-    def metrics(self, tracker_uuid:str, **kwargs):
+    def pixel_tracker_metrics(self, tracker_uuid:str, **kwargs):
         msg=Message()
         
         try:
-            metrics=self._pixel_tracking.get_metrics(
+            metrics=self._pixel_tracking.get_pixel_metrics(
                 tracker_uuid=tracker_uuid
                 )
             msg.status="Success"
@@ -80,4 +82,49 @@ class Endpoints:
             msg.message="Unable to obtain metrics."
         
         return msg
+
+    def shortened_urls(self, **kwargs):
+        msg=Message()
+
+        try:
+            urls=self._url_shortener.get_urls()
+            
+            msg.status="Success"
+            msg.message="Shortened urls"
+            msg.data=urls
+        except:
+            msg.status="Error"
+            msg.message="Unable to obtain URLs"
+        return msg
     
+    def shortened_url(self, url_uuid:str, **kwargs):
+        msg=Message()
+
+        try:
+            url=self._url_shortener.get_url(
+                url_uuid=url_uuid
+                )
+            msg.status="Success"
+            msg.message="Shortened URL"
+            msg.data[url_uuid]=url
+        except:
+            msg.status="Error"
+            msg.message="Unable to obtain URL"
+        return msg
+
+    def shortened_url_metrics(self, url_uuid: str, **kwargs):
+        msg=Message()
+
+        try:
+            metrics=self._url_shortener.get_url_metrics(
+                url_uuid=url_uuid
+                )
+            msg.status="Success"
+            msg.message="Metrics for shortened URL"
+            msg.data[url_uuid]=metrics
+        
+        except:
+            raise
+            msg.status="Error"
+            msg.message="Unable to obtain metrics for specific URL"
+        return msg

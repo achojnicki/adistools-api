@@ -19,9 +19,6 @@ class Message:
         
         if self.message:
             msg['message']=self.message
-        
-        if self.http_code:
-            msg['http_code']=self.http_code
 
         if self.data:
             msg['data']=self.data

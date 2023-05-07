@@ -3,6 +3,7 @@ from DB import DB
 from Auth import Auth
 from Message import Message
 from Pixel_tracking import Pixel_tracking
+from URL_shortener import URL_shortener
 from API.Endpoints import Endpoints
 
 #external modules
@@ -40,12 +41,14 @@ class API(Endpoints):
         self._auth=Auth(self)
         
         self._pixel_tracking=Pixel_tracking(self)
+        self._url_shortener=URL_shortener(self)
         
         self._endpoints_with_required_login=[
             self.logout,
             self.pixel_tracker,
             self.pixel_trackers,
-            self.metrics
+            self.pixel_tracker_metrics,
+            self.shortened_urls
             ]
 
 

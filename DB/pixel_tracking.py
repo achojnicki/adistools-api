@@ -19,7 +19,7 @@ class pixel_tracking:
 
         return trackers
     
-    def get_metrics(self, tracker_uuid:str):
+    def get_pixel_metrics(self, tracker_uuid:str):
         query={"tracker_uuid": tracker_uuid}
         
         metrics=[]
