@@ -13,18 +13,6 @@ def login():
 def logout():
     return api.caller(api.logout, request.form) 
 
-@application.route('/pixel_tracking/trackers',methods=["POST"])
-def trackers():
-    return api.caller(api.pixel_trackers, request.form)
-
-@application.route('/pixel_tracking/tracker',methods=["POST"])
-def tracker():
-    return api.caller(api.pixel_tracker,request.form)
-
-@application.route('/pixel_tracking/metrics', methods=["POST"])
-def pixel_tracker_metrics():
-    return api.caller(api.pixel_tracker_metrics, request.form)
-
 @application.route('/url_shortener/urls', methods=["POST"])
 def urls():
     return api.caller(api.shortened_urls, request.form)
@@ -36,6 +24,10 @@ def url():
 @application.route('/url_shortener/metrics', methods=["POST"])
 def url_metrics():
     return api.caller(api.shortened_url_metrics, request.form)
+
+@application.route('/url_shortener/create_short_url', methods=["POST"])
+def create_short_url():
+    return api.caller(api.create_short_url, request.form)
 
 @application.errorhandler(Exception)
 def error_handler(error):

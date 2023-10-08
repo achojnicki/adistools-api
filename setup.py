@@ -30,14 +30,3 @@ user_document={
     }
 
 users.insert_one(user_document)
-
-
-
-tracker_document={
-    'tracker_uuid'  : str(uuid4()),
-    "user_uuid"     : str(user_document['user_uuid']),
-    "title"         : "Pixel tracker",
-    "description"   : "Sample pixel tracker"
-    }
-
-trackers.insert_one(tracker_document)

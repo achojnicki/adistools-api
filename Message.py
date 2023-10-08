@@ -3,13 +3,11 @@ from json import dumps
 class Message:
     status=None
     message=None
-    http_code=None
     data=None
     
     def __init__(self):
         self.status=None
         self.message=None
-        self.http_code=None
         self.data={}
 
     def __str__(self):

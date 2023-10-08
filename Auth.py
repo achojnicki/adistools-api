@@ -1,4 +1,6 @@
 from uuid import uuid4
+from hashlib import sha256
+
 class Auth:
     def __init__(self, root):
         self._root=root
@@ -7,7 +9,7 @@ class Auth:
         self._db=self._root._db
 
         
-    def login(self, user_email:str, password_hash:str, **kwargs):
+    def login(self, user_email:str, user_password:str, **kwargs):
         user=self._db.get_user_by_user_email(user_email=user_email)
                 
         if not user:
@@ -15,6 +17,8 @@ class Auth:
         
         session=self._db.get_session_by_user_email(user_email=user['user_email'])
         
+        password_hash=sha256(user_password.encode('utf-8')).hexdigest()
+
         if password_hash==user['password_hash']:
             self._log.success(
                 'Password for {user_email} is correct'.format(

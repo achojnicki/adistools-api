@@ -1,24 +1,15 @@
-#submodules
 from DB import DB
 from Auth import Auth
 from Message import Message
-from Pixel_tracking import Pixel_tracking
 from URL_shortener import URL_shortener
 from API.Endpoints import Endpoints
+from Exceptions import MissingField
 
-#external modules
 from adisconfig import adisconfig
 from adislog import adislog
 from flask import Response
 
 import inspect
-
-
-class ArgsCheckException(Exception):
-    pass
-
-class MissingField(ArgsCheckException):
-    pass
 
 
 class API(Endpoints):
@@ -29,7 +20,7 @@ class API(Endpoints):
     _pixel_tracking=None
 
     def __init__(self):
-        self._config=adisconfig('/etc/adistools/api.yaml')
+        self._config=adisconfig('/opt/adistools/configs/adistools-api.yaml')
 
         self._log=adislog(
             backends=['terminal'],
@@ -38,25 +29,22 @@ class API(Endpoints):
             )
 
         self._db=DB(self)
+
         self._auth=Auth(self)
-        
-        self._pixel_tracking=Pixel_tracking(self)
         self._url_shortener=URL_shortener(self)
         
         self._endpoints_with_required_login=[
             self.logout,
-            self.pixel_tracker,
-            self.pixel_trackers,
-            self.pixel_tracker_metrics,
             self.shortened_url,
             self.shortened_urls,
-            self.shortened_url_metrics
+            self.shortened_url_metrics,
+            self.create_short_url,
 
             ]
 
 
     def caller(self, target, args):      
-        """Caller function - all the valid traffic goes through this method"""
+        """Caller function - all valid traffic goes through this method"""
         #check if all required params are present. Otherwise raise exception.
         try:
             
@@ -75,7 +63,6 @@ class API(Endpoints):
 
         #check if the endpoint require login. If so check if the session_uuid were provided and check existance of the session in the DB
         if self._check_if_login_is_required(target):
-            print('checking login requiments')
             if not self._db.session_exists(args['session_uuid']):
                 msg=Message()
                 msg.status='Error'
@@ -102,7 +89,7 @@ class API(Endpoints):
         sig=inspect.signature(target)
         required_params=[]
         
-        #iterate trought the definitions of the endpoint to find out required arguments
+        #iterate through the definitions of the endpoint to find out required arguments
         for param in sig.parameters:
             if sig.parameters[param].default is inspect._empty:
                 required_params.append(param)
@@ -129,11 +116,10 @@ class API(Endpoints):
             raise exception
     
     def error(self, error):
-        """handler for the error pages"""
+        """handler for error pages"""
         msg=Message()
 
         msg.status='Error'
-        msg.http_code=error.code
         msg.message=error.description
         
         return Response(
