@@ -1,16 +1,14 @@
 from Message import Message
 
 class shortened_urls:
-    def shortened_urls(self, **kwargs):
+    def shortened_urls(self, page=1, **kwargs):
         msg=Message()
 
-        try:
-            urls=self._url_shortener.get_urls()
-            
-            msg.status="Success"
-            msg.message="Shortened urls"
-            msg.data=urls
-        except:
-            msg.status="Error"
-            msg.message="Unable to obtain URLs"
+        urls=self._url_shortener.get_urls(
+            page=page
+            )
+        
+        msg.status="Success"
+        msg.message="Shortened urls"
+        msg.data=urls
         return msg

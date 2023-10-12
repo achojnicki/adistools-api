@@ -2,6 +2,7 @@ from DB import DB
 from Auth import Auth
 from Message import Message
 from URL_shortener import URL_shortener
+from Logs import Logs
 from API.Endpoints import Endpoints
 from Exceptions import MissingField
 
@@ -23,15 +24,21 @@ class API(Endpoints):
         self._config=adisconfig('/opt/adistools/configs/adistools-api.yaml')
 
         self._log=adislog(
-            backends=['terminal'],
-            debug=True,
-            replace_except_hook=False,
+            project_name="adistools-api",
+            backends=['rabbitmq_emitter'],
+            rabbitmq_host=self._config.rabbitmq.host,
+            rabbitmq_port=self._config.rabbitmq.port,
+            rabbitmq_user=self._config.rabbitmq.user,
+            rabbitmq_passwd=self._config.rabbitmq.password,
+            debug=self._config.log.debug,
             )
 
+        self._log.info('Starting initialization of adistools-api')
         self._db=DB(self)
 
         self._auth=Auth(self)
         self._url_shortener=URL_shortener(self)
+        self._logs=Logs(self)
         
         self._endpoints_with_required_login=[
             self.logout,
@@ -39,9 +46,9 @@ class API(Endpoints):
             self.shortened_urls,
             self.shortened_url_metrics,
             self.create_short_url,
-
             ]
-
+            
+        self._log.success('Initialisation of adistools-api successed.')
 
     def caller(self, target, args):      
         """Caller function - all valid traffic goes through this method"""

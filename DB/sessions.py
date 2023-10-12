@@ -11,10 +11,11 @@ class sessions:
         session=self._sessions.find_one(query)
         return session
 
-    def create_session(self, user_email, session_uuid:str):
+    def create_session(self, user_email, session_uuid:str, user_uuid:str):
         item={
             "session_uuid":str(session_uuid),
-            "user_email":user_email
+            "user_email":user_email,
+            "user_uuid":user_uuid
         }
 
         self._sessions.insert_one(item)

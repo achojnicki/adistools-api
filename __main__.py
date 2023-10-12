@@ -29,6 +29,12 @@ def url_metrics():
 def create_short_url():
     return api.caller(api.create_short_url, request.form)
 
+@application.route('/logs/logs', methods=["POST"])
+def logs():
+    return api.caller(api.logs, request.form)
+
+
+
 @application.errorhandler(Exception)
 def error_handler(error):
     return api.error(error)

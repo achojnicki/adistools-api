@@ -1,20 +1,25 @@
 from Message import Message
+from Exceptions import UserDoNotExist, PasswordDoNotMatch
 
 class login:
     def login(self, user_email:str, user_password:str, **kwargs):
-        msg=Message()
-        session=self._auth.login(
-            user_email=user_email,
-            user_password=user_password
-        )
+        try:
+            msg=Message()
+            session=self._auth.login(
+                user_email=user_email,
+                user_password=user_password
+            )
         
-        if session:
             msg.status='Success'
             msg.message='Login Successful'
             msg.data['session_uuid']=session['session_uuid']
         
-        else:
+        except UserDoNotExist:
             msg.status='Failed'
-            msg.message='Log in failed'
+            msg.message='User do not exist'
+        
+        except PasswordDoNotMatch:
+            msg.status="Failed"
+            msg.message="Wrong password"
         
         return msg

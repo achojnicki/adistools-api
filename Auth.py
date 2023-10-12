@@ -1,3 +1,5 @@
+from Exceptions import UserDoNotExist, PasswordDoNotMatch
+
 from uuid import uuid4
 from hashlib import sha256
 
@@ -11,49 +13,35 @@ class Auth:
         
     def login(self, user_email:str, user_password:str, **kwargs):
         user=self._db.get_user_by_user_email(user_email=user_email)
-                
         if not user:
-            return False
+            raise UserDoNotExist
         
         session=self._db.get_session_by_user_email(user_email=user['user_email'])
-        
         password_hash=sha256(user_password.encode('utf-8')).hexdigest()
 
         if password_hash==user['password_hash']:
-            self._log.success(
-                'Password for {user_email} is correct'.format(
-                    user_email=user['user_email']
-                ))
+            self._log.success(f'Password for {user["user_email"]} is correct')
             
             if not session:
-                self._log.info(
-                    """Existing session for user {user_email} weren't been found. starting login procedure""".format(
-                        user_email=user['user_email']
-                    ))
+                self._log.info(f'Existing session for user {user["user_email"]} weren\'t been found. Starting login...')
                     
                 session_uuid=uuid4()
                 session=self._db.create_session(
-                    user_email=user_email,
-                    session_uuid=session_uuid
+                    user_email=user['user_email'],
+                    session_uuid=session_uuid,
+                    user_uuid=user['user_uuid']
                     )
                 
-                self._log.success(
-                    'Session for {user_email} has been created successfully'.format(
-                        user_email=user['user_email']
-                ))
+                self._log.success(f'Session for {user["user_email"]} has been created successfully')
         
             return session
-        
+
         else:
-            return False
+            self._log.warning(f'password for user {user["user_email"]} is incorrect.')
+            raise PasswordDoNotMatch
     
     def logout(self, user_email:str, session_uuid:str, **kwargs):
-        self._log.info(
-            'Trying to logout the {user_email}(session_uuid:{session_uuid})'.format(
-                user_email=user_email,
-                session_uuid=session_uuid
-                )
-            )
+        self._log.info(f'Trying to logout the {user_email}(session_uuid:{session_uuid})')
         
         status=self._db.remove_session(
             user_email=user_email,
