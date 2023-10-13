@@ -42,7 +42,7 @@ class url_shortener:
     def create_short_url(self, redirection_url: str, redirection_uuid: str, redirection_query: str):
         document={
             'redirection_url' : redirection_url,
-            'redirection_uuid' : redirection_uuid,
+            'redirection_uuid' : str(redirection_uuid),
             'redirection_query' : redirection_query  
         }
 

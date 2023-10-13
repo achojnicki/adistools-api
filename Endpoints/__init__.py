@@ -1,4 +1,4 @@
-from API.Endpoints import (
+from Endpoints import (
     login,
     logout,
     shortened_url,

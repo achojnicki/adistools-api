@@ -42,7 +42,7 @@ class URL_shortener:
         if self._db.short_url_exists(redirection_query):
             raise RedirectionQueryExists
 
-        redirection_uuid=str(uuid4())
+        redirection_uuid=uuid4()
 
         document=self._db.create_short_url(
             redirection_uuid=redirection_uuid,
@@ -50,6 +50,8 @@ class URL_shortener:
             redirection_url=redirection_url
             )
         del document['_id']
+
+        self._log.info('short url({redirection_query}) created for {redirection_url}')
         return document
 
 

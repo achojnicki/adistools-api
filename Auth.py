@@ -37,15 +37,19 @@ class Auth:
             return session
 
         else:
-            self._log.warning(f'password for user {user["user_email"]} is incorrect.')
+            self._log.warning(f'password for user {user["user_email"]} is wrong.')
             raise PasswordDoNotMatch
     
     def logout(self, user_email:str, session_uuid:str, **kwargs):
-        self._log.info(f'Trying to logout the {user_email}(session_uuid:{session_uuid})')
         
         status=self._db.remove_session(
             user_email=user_email,
             session_uuid=session_uuid
             )
+        if status:
+            self._log.info(f'User {user_email} logged out successfully.')
+
+        else:
+            self._log.warning(f'Logging out user {user_email} failed.')
         return status
         

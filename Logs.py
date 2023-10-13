@@ -18,6 +18,7 @@ class Logs:
             del item['_id']
 
         return logs
+        
     def get_logs_by_project_name(self, project_name, page):
         limit=self._config.api.results_per_page
         skip=(int(page)-1)*limit

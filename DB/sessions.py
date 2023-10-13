@@ -21,7 +21,7 @@ class sessions:
         self._sessions.insert_one(item)
         return item
 
-    
+
     def remove_session(self, user_email:str,  session_uuid:str):
         query={
             'user_email':user_email,

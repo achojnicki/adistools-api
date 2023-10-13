@@ -3,7 +3,7 @@ from Auth import Auth
 from Message import Message
 from URL_shortener import URL_shortener
 from Logs import Logs
-from API.Endpoints import Endpoints
+from Endpoints import Endpoints
 from Exceptions import MissingField
 
 from adisconfig import adisconfig
@@ -46,6 +46,7 @@ class API(Endpoints):
             self.shortened_urls,
             self.shortened_url_metrics,
             self.create_short_url,
+            self.logs
             ]
             
         self._log.success('Initialisation of adistools-api successed.')
