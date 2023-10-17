@@ -5,7 +5,8 @@ from Endpoints import (
     shortened_url_metrics,
     shortened_urls,
     create_short_url,
-    logs
+    logs,
+    create_logs_project
     )
 
 class Endpoints(login.login,
@@ -14,10 +15,7 @@ class Endpoints(login.login,
     shortened_url_metrics.shortened_url_metrics,
     shortened_urls.shortened_urls,
     create_short_url.create_short_url,
-    logs.logs
+    logs.logs,
+    create_logs_project.create_logs_project
     ):
     pass
-
-
-    
-

@@ -1,17 +1,14 @@
 from Message import Message
 
 class logs:
-    def logs(self,project_name=None, page=1, **kwargs):
+    def logs(self, project_name=None, log_level=None, page=1, **kwargs):
         msg=Message()
-        if not project_name:
-            logs=self._logs.get_logs(
-                page=page
-                )
-        else:
-            logs=self._logs.get_logs_by_project_name(
-                project_name=project_name,
-                page=page
-                )
+        logs=self._logs.get_logs(
+            page=page,
+            project_name=project_name,
+            log_level=log_level
+        
+            )
         
         msg.status="Success"
         msg.message="Logs"

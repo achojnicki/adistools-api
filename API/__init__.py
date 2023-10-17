@@ -46,13 +46,14 @@ class API(Endpoints):
             self.shortened_urls,
             self.shortened_url_metrics,
             self.create_short_url,
-            self.logs
+            self.logs,
+            self.create_logs_project
             ]
             
         self._log.success('Initialisation of adistools-api successed.')
 
     def caller(self, target, args):      
-        """Caller function - all valid traffic goes through this method"""
+        """Caller method - all valid traffic goes through this method"""
         #check if all required params are present. Otherwise raise exception.
         try:
             
@@ -93,7 +94,6 @@ class API(Endpoints):
         return False
                 
     def _check_required_args(self, target, avaiable_params):
-
         sig=inspect.signature(target)
         required_params=[]
         

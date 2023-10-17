@@ -1,3 +1,6 @@
+from Exceptions import LogsProjectExists
+from uuid import uuid4
+
 class Logs:
     def __init__(self, root):
         self._root=root
@@ -6,30 +9,29 @@ class Logs:
         self._log=self._root._log
         self._db=self._root._db
 
-    def get_logs(self, page):
+    def get_logs(self, page, project_name=None, log_level=None):
         limit=self._config.api.results_per_page
         skip=(int(page)-1)*limit
 
         logs=self._db.get_logs(
             limit=limit,
-            skip=skip
-            )
-        for item in logs:
-            del item['_id']
-
-        return logs
-        
-    def get_logs_by_project_name(self, project_name, page):
-        limit=self._config.api.results_per_page
-        skip=(int(page)-1)*limit
-
-        logs=self._db.get_logs_by_project_name(
+            skip=skip,
             project_name=project_name,
-            limit=limit,
-            skip=skip
+            log_level=log_level,
             )
-
-        for item in logs:
-            del item['_id']
+                    
 
         return logs
+
+    def create_logs_project(self, logs_project_name):
+        if self._db.logs_project_exists(logs_project_name=logs_project_name):
+            raise LogsProjectExists
+        logs_project_uuid=uuid4()
+
+        logs_project=self._db.create_logs_project(
+            logs_project_name=logs_project_name,
+            logs_project_uuid=logs_project_uuid
+            )
+        del logs_project['_id']  
+
+        return logs_project

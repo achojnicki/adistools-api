@@ -33,6 +33,10 @@ def create_short_url():
 def logs():
     return api.caller(api.logs, request.form)
 
+@application.route('/logs/create_logs_project', methods=["POST"])
+def create_log_project():
+    return api.caller(api.create_logs_project, request.form)
+
 
 
 @application.errorhandler(Exception)

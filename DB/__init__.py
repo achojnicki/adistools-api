@@ -33,4 +33,5 @@ class DB(
         self._shortened_urls_metrics=self._db['shortened_urls_metrics']
 
         self._logs=self._db['logs']
+        self._logs_projects=self._db['logs_projects']
         
