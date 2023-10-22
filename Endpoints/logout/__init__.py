@@ -3,7 +3,7 @@ from Message import Message
 class logout:
     def logout(self, user_email:str, session_uuid:str, **kwargs):
         msg=Message()
-        status=self.middlewares.auth.logout(
+        status=self._middlewares.auth.logout(
             user_email=user_email,
             session_uuid=session_uuid
             )

@@ -18,4 +18,17 @@ class Endpoints(login.login,
     logs.logs,
     create_logs_project.create_logs_project
     ):
-    pass
+    def __init__(self, root):
+        self._root=root
+
+        self._middlewares=root.middlewares
+
+        self._endpoints_with_required_login=[
+            self.logout,
+            self.shortened_url,
+            self.shortened_urls,
+            self.shortened_url_metrics,
+            self.create_short_url,
+            self.logs,
+            self.create_logs_project
+            ]

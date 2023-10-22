@@ -5,7 +5,7 @@ class create_short_url:
 		msg=Message()
 
 		try:
-			result=self.middlewares.url_shortener.create_short_url(
+			result=self._middlewares.url_shortener.create_short_url(
 				redirection_query=redirection_query,
 				redirection_url=redirection_url
 				)

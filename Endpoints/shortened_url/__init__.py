@@ -5,7 +5,7 @@ class shortened_url:
         msg=Message()
 
         try:
-            url=self.middlewares.url_shortener.get_url(
+            url=self._middlewares.url_shortener.get_url(
                 redirection_uuid=redirection_uuid
                 )
             msg.status="Success"

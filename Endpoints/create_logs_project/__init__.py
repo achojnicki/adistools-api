@@ -6,7 +6,7 @@ class create_logs_project:
 		msg=Message()
 
 		try:
-			result=self.middlewares.logs.create_logs_project(
+			result=self._middlewares.logs.create_logs_project(
 				logs_project_name=logs_project_name
 				)
 			msg.status="Success"

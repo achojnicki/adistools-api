@@ -11,7 +11,7 @@ from flask import Response
 import inspect
 
 
-class API(Endpoints):
+class API:
     config=None
     db=None
     log=None
@@ -33,22 +33,24 @@ class API(Endpoints):
         
         self.db=DB(self)
         self.middlewares=Middlewares(self)
-        
-        self._endpoints_with_required_login=[
-            self.logout,
-            self.shortened_url,
-            self.shortened_urls,
-            self.shortened_url_metrics,
-            self.create_short_url,
-            self.logs,
-            self.create_logs_project
-            ]
+        self.endpoints=Endpoints(self)
             
         self.log.success('Initialisation of adistools-api successed.')
 
-    def caller(self, target, args):      
+    def router(self, target, args):      
         """Caller method - all valid traffic goes through this method"""
         #check if all required params are present. Otherwise raise exception.
+
+        if not self.check_if_target_exists(target):
+            msg=Message()
+            msg.status="Error"
+            msg.message="Endpoint not found"
+
+            return Response(
+                msg.__str__().encode('utf-8', errors='replace'),
+                mimetype="application/json",
+                status=404
+                )
         try:
             
             self._check_required_args(target, args)
@@ -78,17 +80,20 @@ class API(Endpoints):
         
         #call the endpoint
         return Response(
-            target(**args).__str__().encode('utf-8', errors='replace'),
+            getattr(self.endpoints,target)(**args).__str__().encode('utf-8', errors='replace'),
             mimetype="application/json"
             )
     
+    def check_if_target_exists(self, target):
+        return hasattr(self.endpoints, target)
+
     def _check_if_login_is_required(self, target):
-        if target in self._endpoints_with_required_login:
+        if target in self.endpoints._endpoints_with_required_login:
             return True
         return False
                 
     def _check_required_args(self, target, avaiable_params):
-        sig=inspect.signature(target)
+        sig=inspect.signature(getattr(self.endpoints,target))
         required_params=[]
         
         #iterate through the definitions of the endpoint to find out required arguments
