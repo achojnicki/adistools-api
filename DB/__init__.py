@@ -16,22 +16,22 @@ class DB(
     def __init__(self, root):
         self._root=root
 
-        self._config=self._root._config
-        self._log=self._root._log
+        self.config=self._root.config
+        self.log=self._root.log
 
         self._mongo_cli=MongoClient(
-            self._config.mongo.host,
-            self._config.mongo.port,
+            self.config.mongo.host,
+            self.config.mongo.port,
         )
 
-        self._db=self._mongo_cli[self._config.mongo.db]
+        self._db=self._mongo_cli[self.config.mongo.db]
 
-        self._users=self._db['users']
-        self._sessions=self._db['sessions']
+        self.users=self._db['users']
+        self.sessions=self._db['sessions']
 
-        self._shortened_urls=self._db['shortened_urls']
-        self._shortened_urls_metrics=self._db['shortened_urls_metrics']
+        self.shortened_urls=self._db['shortened_urls']
+        self.shortened_urls_metrics=self._db['shortened_urls_metrics']
 
-        self._logs=self._db['logs']
-        self._logs_projects=self._db['logs_projects']
+        self.logs=self._db['logs']
+        self.logs_projects=self._db['logs_projects']
         

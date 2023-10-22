@@ -1,7 +1,7 @@
 class url_shortener:
     def get_urls(self, limit, skip):
         urls=[]
-        cursor=self._shortened_urls.find().skip(skip).limit(limit)
+        cursor=self.shortened_urls.find().skip(skip).limit(limit)
         for item in cursor:
             urls.append(item)
         return urls
@@ -10,7 +10,7 @@ class url_shortener:
         query={"redirection_uuid": redirection_uuid}
 
         url={}
-        cursor=self._shortened_urls.find_one(query)
+        cursor=self.shortened_urls.find_one(query)
         if cursor:
             for item in cursor:
                 url[item]=cursor[item]
@@ -21,7 +21,7 @@ class url_shortener:
         query={"redirection_query": redirection_query}
 
         url={}
-        cursor=self._shortened_urls.find_one(query)
+        cursor=self.shortened_urls.find_one(query)
         if cursor:
             for item in cursor:
                 url[item]=cursor[item]
@@ -32,7 +32,7 @@ class url_shortener:
         query={"redirection_uuid": redirection_uuid}
         
         metrics=[]
-        cursor=self._shortened_urls_metrics.find(query)
+        cursor=self.shortened_urls_metrics.find(query)
 
         for item in cursor:
             metrics.append(item)
@@ -46,7 +46,7 @@ class url_shortener:
             'redirection_query' : redirection_query  
         }
 
-        self._shortened_urls.insert_one(document)
+        self.shortened_urls.insert_one(document)
         return document
 
     def short_url_exists(self, redirection_query: str):

@@ -1,10 +1,8 @@
 from DB import DB
-from Auth import Auth
 from Message import Message
-from URL_shortener import URL_shortener
-from Logs import Logs
 from Endpoints import Endpoints
 from Exceptions import MissingField
+from Middlewares import Middlewares
 
 from adisconfig import adisconfig
 from adislog import adislog
@@ -14,31 +12,27 @@ import inspect
 
 
 class API(Endpoints):
-    _config=None
-    _db=None
-    _log=None
-    _auth=None
-    _pixel_tracking=None
+    config=None
+    db=None
+    log=None
 
     def __init__(self):
-        self._config=adisconfig('/opt/adistools/configs/adistools-api.yaml')
+        self.config=adisconfig('/opt/adistools/configs/adistools-api.yaml')
 
-        self._log=adislog(
+        self.log=adislog(
             project_name="adistools-api",
             backends=['rabbitmq_emitter'],
-            rabbitmq_host=self._config.rabbitmq.host,
-            rabbitmq_port=self._config.rabbitmq.port,
-            rabbitmq_user=self._config.rabbitmq.user,
-            rabbitmq_passwd=self._config.rabbitmq.password,
-            debug=self._config.log.debug,
+            rabbitmq_host=self.config.rabbitmq.host,
+            rabbitmq_port=self.config.rabbitmq.port,
+            rabbitmq_user=self.config.rabbitmq.user,
+            rabbitmq_passwd=self.config.rabbitmq.password,
+            debug=self.config.log.debug,
             )
 
-        self._log.info('Starting initialization of adistools-api')
-        self._db=DB(self)
-
-        self._auth=Auth(self)
-        self._url_shortener=URL_shortener(self)
-        self._logs=Logs(self)
+        self.log.info('Starting initialization of adistools-api')
+        
+        self.db=DB(self)
+        self.middlewares=Middlewares(self)
         
         self._endpoints_with_required_login=[
             self.logout,
@@ -50,7 +44,7 @@ class API(Endpoints):
             self.create_logs_project
             ]
             
-        self._log.success('Initialisation of adistools-api successed.')
+        self.log.success('Initialisation of adistools-api successed.')
 
     def caller(self, target, args):      
         """Caller method - all valid traffic goes through this method"""
@@ -72,7 +66,7 @@ class API(Endpoints):
 
         #check if the endpoint require login. If so check if the session_uuid were provided and check existance of the session in the DB
         if self._check_if_login_is_required(target):
-            if not self._db.session_exists(args['session_uuid']):
+            if not self.db.session_exists(args['session_uuid']):
                 msg=Message()
                 msg.status='Error'
                 msg.message='This endpoint do require valid session.'

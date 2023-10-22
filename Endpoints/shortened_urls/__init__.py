@@ -4,7 +4,7 @@ class shortened_urls:
     def shortened_urls(self, page=1, **kwargs):
         msg=Message()
 
-        urls=self._url_shortener.get_urls(
+        urls=self.middlewares.url_shortener.get_urls(
             page=page
             )
         

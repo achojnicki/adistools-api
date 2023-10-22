@@ -2,13 +2,13 @@ class sessions:
     def get_session_by_session_uuid(self, session_uuid:str):
         query={'session_uuid':session_uuid}
 
-        session=self._sessions.find_one(query)
+        session=self.sessions.find_one(query)
         return session
 
     def get_session_by_user_email(self, user_email:str):
         query={'user_email':user_email}
 
-        session=self._sessions.find_one(query)
+        session=self.sessions.find_one(query)
         return session
 
     def create_session(self, user_email, session_uuid:str, user_uuid:str):
@@ -18,7 +18,7 @@ class sessions:
             "user_uuid":user_uuid
         }
 
-        self._sessions.insert_one(item)
+        self.sessions.insert_one(item)
         return item
 
 
@@ -28,7 +28,7 @@ class sessions:
             "session_uuid":session_uuid
             }
         try:
-            self._sessions.delete_one(query)
+            self.sessions.delete_one(query)
             return True
         except:
             return False

@@ -5,7 +5,7 @@ class shortened_url_metrics:
         msg=Message()
 
         try:
-            metrics=self._url_shortener.get_url_metrics(
+            metrics=self.middlewares.url_shortener.get_url_metrics(
                 redirection_uuid=redirection_uuid
                 )
             msg.status="Success"
