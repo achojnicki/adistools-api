@@ -1,8 +1,8 @@
-from Message import Message
+from Response import Response
 
 class logs:
     def logs(self, project_name=None, log_level=None, page=1, **kwargs):
-        msg=Message()
+        rsp=Response()
         logs=self._middlewares.logs.get_logs(
             page=page,
             project_name=project_name,
@@ -10,7 +10,7 @@ class logs:
         
             )
         
-        msg.status="Success"
-        msg.message="Logs"
-        msg.data=logs
-        return msg
+        rsp.status="Success"
+        rsp.message="Logs"
+        rsp.data=logs
+        return rsp

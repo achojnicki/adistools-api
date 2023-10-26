@@ -23,7 +23,7 @@ class Auth:
             self.log.success(f'Password for {user["user_email"]} is correct')
             
             if not session:
-                self.log.info(f'Existing session for user {user["user_email"]} weren\'t been found. Starting login...')
+                self.log.info(f'Existing session for user {user["user_email"]} weren\'t been found. Creating new one...')
                     
                 session_uuid=uuid4()
                 session=self.db.create_session(
@@ -50,6 +50,6 @@ class Auth:
             self.log.info(f'User {user_email} logged out successfully.')
 
         else:
-            self.log.warning(f'Logging out user {user_email} failed.')
+            self.log.error(f'Attempt to log out user {user_email} failed.')
         return status
         

@@ -1,25 +1,22 @@
 from DB import DB
-from Message import Message
+from Response import Response
 from Endpoints import Endpoints
 from Exceptions import MissingField
 from Middlewares import Middlewares
 
 from adisconfig import adisconfig
-from adislog import adislog
-from flask import Response
+from adistoolslog import adistoolslog
+from flask import Response as Flask_Response
 
 import inspect
 
 
 class API:
-    config=None
-    db=None
-    log=None
-
+    project_name="adistools-api"
     def __init__(self):
         self.config=adisconfig('/opt/adistools/configs/adistools-api.yaml')
 
-        self.log=adislog(
+        self.log=adistoolslog(
             project_name="adistools-api",
             backends=['rabbitmq_emitter'],
             rabbitmq_host=self.config.rabbitmq.host,
@@ -38,49 +35,39 @@ class API:
         self.log.success('Initialisation of adistools-api successed.')
 
     def router(self, target, args):      
-        """Caller method - all valid traffic goes through this method"""
+        """Router method - all valid traffic goes through this method"""
         #check if all required params are present. Otherwise raise exception.
 
         if not self.check_if_target_exists(target):
-            msg=Message()
-            msg.status="Error"
-            msg.message="Endpoint not found"
+            rsp=Response()
+            rsp.status="Error"
+            rsp.message="Endpoint not found."
 
-            return Response(
-                msg.__str__().encode('utf-8', errors='replace'),
-                mimetype="application/json",
-                status=404
-                )
+            return Flask_Response(rsp, mimetype="application/json", status=404)
         try:
             
             self._check_required_args(target, args)
         
         except MissingField as e:
-            msg=Message()
-            msg.status="Error"
-            msg.message="Missing POST args for this request."
-            msg.data['missing_fields']=e.missing_fields
+            rsp=Response()
+            rsp.status="Error"
+            rsp.message="Missing POST args for this request."
+            rsp.data['missing_fields']=e.missing_fields
             
-            return Response(
-                msg.__str__().encode('utf-8', errors='replace'),
-                mimetype="application/json"
-                )
+            return Flask_Response(rsp, mimetype="application/json")
 
         #check if the endpoint require login. If so check if the session_uuid were provided and check existance of the session in the DB
         if self._check_if_login_is_required(target):
             if not self.db.session_exists(args['session_uuid']):
-                msg=Message()
-                msg.status='Error'
-                msg.message='This endpoint do require valid session.'
+                rsp=Response()
+                rsp.status='Error'
+                rsp.message='This endpoint do require valid session.'
             
-                return Response(
-                   msg.__str__().encode('utf-8', errors='replace'),
-                   mimetype="application/json"
-                   )
+                return Flask_Response(rsp, mimetype="application/json")
         
         #call the endpoint
-        return Response(
-            getattr(self.endpoints,target)(**args).__str__().encode('utf-8', errors='replace'),
+        return Flask_Response(
+            getattr(self.endpoints,target)(**args),
             mimetype="application/json"
             )
     
@@ -88,7 +75,7 @@ class API:
         return hasattr(self.endpoints, target)
 
     def _check_if_login_is_required(self, target):
-        if target in self.endpoints._endpoints_with_required_login:
+        if getattr(self.endpoints, target) in self.endpoints._endpoints_with_required_login:
             return True
         return False
                 
@@ -124,13 +111,9 @@ class API:
     
     def error(self, error):
         """handler for error pages"""
-        msg=Message()
+        rsp=Response()
 
-        msg.status='Error'
-        msg.message=error.description
+        rsp.status='Error'
+        rsp.message=error.description
         
-        return Response(
-            msg.__str__().encode('utf-8', errors='replace'),
-            mimetype="application/json",
-            status=error.code
-        )
+        return Flask_Response(rsp, mimetype="application/json", status=error.code)

@@ -1,14 +1,14 @@
-from Message import Message
+from Response import Response
 
 class shortened_urls:
     def shortened_urls(self, page=1, **kwargs):
-        msg=Message()
+        rsp=Response()
 
         urls=self._middlewares.url_shortener.get_urls(
             page=page
             )
         
-        msg.status="Success"
-        msg.message="Shortened urls"
-        msg.data=urls
-        return msg
+        rsp.status="Success"
+        rsp.message="Shortened urls"
+        rsp.data=urls
+        return rsp

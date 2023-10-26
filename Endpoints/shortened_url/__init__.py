@@ -1,17 +1,17 @@
-from Message import Message
+from Response import Response
 
 class shortened_url:
     def shortened_url(self, redirection_uuid:str, **kwargs):
-        msg=Message()
+        rsp=Response()
 
         try:
             url=self._middlewares.url_shortener.get_url(
                 redirection_uuid=redirection_uuid
                 )
-            msg.status="Success"
-            msg.message="Shortened URL"
-            msg.data[redirection_uuid]=url
+            rsp.status="Success"
+            rsp.message="Shortened URL"
+            rsp.data[redirection_uuid]=url
         except:
-            msg.status="Error"
-            msg.message="Unable to obtain URL"
-        return msg
+            rsp.status="Error"
+            rsp.message="Unable to obtain URL"
+        return rsp

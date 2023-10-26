@@ -1,18 +1,18 @@
-from Message import Message
+from Response import Response
 
 class logout:
     def logout(self, user_email:str, session_uuid:str, **kwargs):
-        msg=Message()
+        rsp=Response()
         status=self._middlewares.auth.logout(
             user_email=user_email,
             session_uuid=session_uuid
             )
         
         if status:
-            msg.status="Success"
-            msg.message='Logout successful'
+            rsp.status="Success"
+            rsp.message='Logout successful'
         else:
-            msg.status="Failed"
-            msg.message='Logout failed'
+            rsp.status="Failed"
+            rsp.message='Logout failed'
         
-        return msg
+        return rsp
