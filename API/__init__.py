@@ -8,7 +8,7 @@ from Endpoints import Endpoints
 from Middlewares import Middlewares
 
 from adisconfig import adisconfig
-from adistoolslog import adistoolslog
+from log import Log
 
 from flask import Response as Flask_Response
 
