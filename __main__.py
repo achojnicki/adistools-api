@@ -7,7 +7,7 @@ application.config['TRAP_HTTP_EXCEPTIONS']=True
 
 @application.route('/<destination>',methods=['POST'])
 def router(destination):
-    return api.router(destination, request.form)
+    return api.router(destination, request.form, request)
 
 
 @application.errorhandler(Exception)

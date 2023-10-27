@@ -1,0 +1,7 @@
+session_uuid:
+  requred: true
+  allow_empty: false
+  
+logs_project_name:
+  required: true
+  allow_empty: true

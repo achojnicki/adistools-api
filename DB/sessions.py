@@ -5,6 +5,12 @@ class sessions:
         session=self.sessions.find_one(query)
         return session
 
+    def get_session_by_user_uuid(self, user_uuid:str):
+        query={'user_uuid':user_uuid}
+
+        session=self.sessions.find_one(query)
+        return session
+
     def get_session_by_user_email(self, user_email:str):
         query={'user_email':user_email}
 

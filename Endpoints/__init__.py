@@ -22,6 +22,7 @@ class Endpoints(login.login,
         self._root=root
 
         self._middlewares=root.middlewares
+        self._session=root.session
 
         self._endpoints_with_required_login=[
             self.logout,

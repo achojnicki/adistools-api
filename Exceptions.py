@@ -1,10 +1,3 @@
-#args check
-class ArgsCheckException(Exception):
-    pass
-
-class MissingField(ArgsCheckException):
-    pass
-
 #auth
 class AuthException(Exception):
     pass
@@ -30,3 +23,15 @@ class LogsProjectExists(LogsException):
     pass
 
 
+#args_validator
+class FormValidatorException(Exception):
+    pass
+
+class FormDefinitionSyntaxError(FormValidatorException):
+    pass
+
+class ValidationError(FormValidatorException):
+    pass
+
+class FormNotDefined(FormValidatorException):
+    pass

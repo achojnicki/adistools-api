@@ -2,7 +2,7 @@ from Response import Response
 from Exceptions import UserDoNotExist, PasswordDoNotMatch
 
 class login:
-    def login(self, user_email:str, user_password:str, **kwargs):
+    def login(self, user_email:str, user_password:str):
         try:
             rsp=Response()
             session=self._middlewares.auth.login(
