@@ -1,4 +1,4 @@
-from Exceptions import UserDoNotExist, PasswordDoNotMatch
+from exceptions import UserDoNotExist, PasswordDoNotMatch
 
 from uuid import uuid4
 from hashlib import sha256

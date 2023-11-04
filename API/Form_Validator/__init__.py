@@ -1,4 +1,4 @@
-from Exceptions import FormDefinitionSyntaxError, ValidationError, FormNotDefined
+from exceptions import FormDefinitionSyntaxError, ValidationError, FormNotDefined
 from yaml.scanner import ScannerError
 
 from os import listdir

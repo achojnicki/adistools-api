@@ -1,5 +1,5 @@
 from flask import request
-class Session:
+class Log_Handle:
 	def __init__(self, root):
 		self._root=root
 		self._db=root.db
@@ -31,17 +31,24 @@ class Session:
 			return None
 
 		return str(self._request.user_agent)
+	
+	@property
+	def url(self):
+		if not self._request:
+			return None
+		return self._request.url
+
 
 	@property
-	def ip_addr(self):
+	def remote_addr(self):
 		if not self._request:
 			return None
 
 		if self._request.headers.getlist("X-Forwarded-For"):
-			ip_addr=self._request.headers.getlist("X-Forwarded-For")[0]
+			remote_addr=self._request.headers.getlist("X-Forwarded-For")[0]
 		else:
-			ip_addr=self._request.remote_addr
-		return str(ip_addr)
+			remote_addr=self._request.remote_addr
+		return str(remote_addr)
 
 	@property
 	def session_uuid(self):
@@ -94,11 +101,13 @@ class Session:
 	@property
 	def log_data(self):
 		data={
-			"logged_in": self.logged_in,
 			"user_agent": self.user_agent,
-			"ip_addr": self.ip_addr,
+			"remote_addr": self.remote_addr,
+			"url":self.url,
 
+			"logged_in": self.logged_in,
 			"session_uuid": self.session['session_uuid'] if self.logged_in else None,
 			"user_uuid": self.user['user_uuid'] if self.logged_in else None,
+
 		}
 		return data

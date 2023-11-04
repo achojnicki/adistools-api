@@ -1,5 +1,5 @@
-from Response import Response
-from Exceptions import RedirectionQueryExists
+from response import Response
+from exceptions import RedirectionQueryExists
 class create_short_url:
 	def create_short_url(self, redirection_query: str, redirection_url: str, **kwargs):
 		rsp=Response()

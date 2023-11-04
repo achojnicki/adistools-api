@@ -1,4 +1,4 @@
-from Exceptions import LogsProjectExists
+from exceptions import LogsProjectExists
 from uuid import uuid4
 
 class Logs:
@@ -19,7 +19,7 @@ class Logs:
             project_name=project_name,
             log_level=log_level,
             )
-                    
+        self.log.success('Obtained logs')
 
         return logs
 

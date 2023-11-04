@@ -1,4 +1,4 @@
-from Response import Response
+from response import Response
 
 class logs:
     def logs(self, project_name=None, log_level=None, page=1, **kwargs):

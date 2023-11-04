@@ -1,4 +1,4 @@
-from Response import Response
+from response import Response
 
 class shortened_url:
     def shortened_url(self, redirection_uuid:str, **kwargs):

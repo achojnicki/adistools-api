@@ -1,4 +1,4 @@
-from Response import Response
+from response import Response
 
 class shortened_urls:
     def shortened_urls(self, page=1, **kwargs):

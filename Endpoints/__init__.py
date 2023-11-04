@@ -1,4 +1,4 @@
-from Endpoints import (
+from endpoints import (
     login,
     logout,
     shortened_url,
@@ -22,7 +22,7 @@ class Endpoints(login.login,
         self._root=root
 
         self._middlewares=root.middlewares
-        self._session=root.session
+        self._log_handle=root.log_handle
 
         self._endpoints_with_required_login=[
             self.logout,

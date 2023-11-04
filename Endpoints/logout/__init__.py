@@ -1,4 +1,4 @@
-from Response import Response
+from response import Response
 
 class logout:
     def logout(self, user_email:str, session_uuid:str):

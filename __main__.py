@@ -1,4 +1,4 @@
-from API import API
+from api import API
 from flask import Flask, request
 
 api=API()

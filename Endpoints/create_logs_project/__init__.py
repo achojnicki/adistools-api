@@ -1,5 +1,5 @@
-from Response import Response
-from Exceptions import LogsProjectExists
+from response import Response
+from exceptions import LogsProjectExists
 
 class create_logs_project:
 	def create_logs_project(self, logs_project_name: str, **kwargs):
