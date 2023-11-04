@@ -1,7 +1,0 @@
-session_uuid:
-  required: true
-  allow_empty: false
-
-redirection_uuid:
-  required: true
-  allow_empty: false
