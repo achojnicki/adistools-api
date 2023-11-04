@@ -1,0 +1,7 @@
+session_uuid:
+  required: true
+  allow_empty: false
+
+page:
+  required: false
+  allow_empty: false
