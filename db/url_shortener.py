@@ -1,7 +1,7 @@
 class url_shortener:
     def get_urls(self, limit, skip):
         urls=[]
-        cursor=self.shortened_urls.find().skip(skip).limit(limit)
+        cursor=self.shortened_urls.find({}).skip(skip).limit(limit)
         for item in cursor:
             urls.append(item)
         return urls

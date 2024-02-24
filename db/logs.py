@@ -11,8 +11,8 @@ class logs:
 
         cursor=self.logs.find(query).skip(skip).limit(limit)
         for item in cursor:
-            logs.append(item)
             del item['_id']
+            logs.append(item)
         
         return logs
 
