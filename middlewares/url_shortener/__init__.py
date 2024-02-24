@@ -58,7 +58,7 @@ class URL_shortener:
             )
         del document['_id']
 
-        self.log.success('Short url({redirection_query}) created for {redirection_url}')
+        self.log.success(f'Short url({redirection_query}) created for {redirection_url}')
         return document
 
 
