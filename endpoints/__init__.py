@@ -7,7 +7,12 @@ from endpoints import (
     create_short_url,
     delete_short_url,
     logs,
-    create_logs_project
+    create_logs_project,
+    pixel_tracker,
+    pixel_trackers,
+    pixel_tracker_metrics,
+    create_pixel_tracker,
+    delete_pixel_tracker
     )
 
 class Endpoints(login.login,
@@ -18,7 +23,12 @@ class Endpoints(login.login,
     create_short_url.create_short_url,
     delete_short_url.delete_short_url,
     logs.logs,
-    create_logs_project.create_logs_project
+    create_logs_project.create_logs_project,
+    pixel_tracker.pixel_tracker,
+    pixel_trackers.pixel_trackers,
+    pixel_tracker_metrics.pixel_tracker_metrics,
+    create_pixel_tracker.create_pixel_tracker,
+    delete_pixel_tracker.delete_pixel_tracker
     ):
     def __init__(self, root):
         self._root=root
@@ -34,5 +44,10 @@ class Endpoints(login.login,
             self.create_short_url,
             self.delete_short_url,
             self.logs,
-            self.create_logs_project
+            self.create_logs_project,
+            self.pixel_tracker,
+            self.pixel_trackers,
+            self.pixel_tracker_metrics,
+            self.create_pixel_tracker,
+            self.delete_pixel_tracker
             ]

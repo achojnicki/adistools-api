@@ -2,6 +2,7 @@ from .users import users
 from .sessions import sessions
 from .url_shortener import url_shortener
 from .logs import logs
+from .pixel_tracker import pixel_tracker
 
 
 from pymongo import MongoClient
@@ -10,7 +11,8 @@ class DB(
     users,
     sessions,
     url_shortener,
-    logs
+    logs,
+    pixel_tracker
 
 ):
     def __init__(self, root):
@@ -34,4 +36,7 @@ class DB(
 
         self.logs=self._db['logs']
         self.logs_projects=self._db['logs_projects']
+
+        self.pixel_trackers=self._db['pixel_tracker']
+        self.pixel_trackers_metrics=self._db['pixel_tracker_metrics']
         

@@ -1,0 +1,7 @@
+session_uuid:
+  required: true
+  allow_empty: false
+
+pixel_tracker_uuid:
+  required: true
+  allow_empty: false

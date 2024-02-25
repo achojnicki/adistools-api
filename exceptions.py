@@ -8,6 +8,7 @@ class UserDoNotExist(AuthException):
 class PasswordDoNotMatch(AuthException):
     pass
 
+
 #url shortener
 class URLShortenerException(Exception):
     pass
@@ -17,6 +18,18 @@ class RedirectionQueryExists(URLShortenerException):
 
 class RedirectionQueryDoesntExists(URLShortenerException):
     pass
+
+
+#pixel tracker
+class PixelTrackerException(Exception):
+    pass
+
+class PixelTrackerExists(PixelTrackerException):
+    pass
+
+class PixelTrackerDoesntExists(PixelTrackerException):
+    pass
+
 
 #logs
 class LogsException(Exception):
