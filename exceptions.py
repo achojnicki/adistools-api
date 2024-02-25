@@ -15,6 +15,9 @@ class URLShortenerException(Exception):
 class RedirectionQueryExists(URLShortenerException):
     pass
 
+class RedirectionQueryDoesntExists(URLShortenerException):
+    pass
+
 #logs
 class LogsException(Exception):
     pass

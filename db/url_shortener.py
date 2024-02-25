@@ -52,5 +52,7 @@ class url_shortener:
     def short_url_exists(self, redirection_query: str):
         return True if self.get_url_by_query(redirection_query=redirection_query) else False
 
+    def delete_short_url(self, redirection_uuid: str):
+        document={"redirection_uuid": redirection_uuid}
 
-
+        self.shortened_urls.delete_one(document)

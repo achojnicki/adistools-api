@@ -1,4 +1,4 @@
-from exceptions import RedirectionQueryExists
+from exceptions import RedirectionQueryExists, RedirectionQueryDoesntExists
 
 from uuid import uuid4
 
@@ -60,5 +60,11 @@ class URL_shortener:
 
         self.log.success(f'Short url({redirection_query}) created for {redirection_url}')
         return document
+
+    def delete_short_url(self, redirection_uuid: str):
+        if not self.db.get_url(redirection_uuid):
+            raise RedirectionQueryDoesntExists
+
+        self.db.delete_short_url(redirection_uuid)
 
 

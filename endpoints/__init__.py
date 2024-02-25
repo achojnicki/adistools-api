@@ -5,6 +5,7 @@ from endpoints import (
     shortened_url_metrics,
     shortened_urls,
     create_short_url,
+    delete_short_url,
     logs,
     create_logs_project
     )
@@ -15,6 +16,7 @@ class Endpoints(login.login,
     shortened_url_metrics.shortened_url_metrics,
     shortened_urls.shortened_urls,
     create_short_url.create_short_url,
+    delete_short_url.delete_short_url,
     logs.logs,
     create_logs_project.create_logs_project
     ):
@@ -30,6 +32,7 @@ class Endpoints(login.login,
             self.shortened_urls,
             self.shortened_url_metrics,
             self.create_short_url,
+            self.delete_short_url,
             self.logs,
             self.create_logs_project
             ]
