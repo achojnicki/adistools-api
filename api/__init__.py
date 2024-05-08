@@ -6,8 +6,8 @@ from response import Response
 from endpoints import Endpoints
 from middlewares import Middlewares
 
-from adisconfig import adisconfig
-from log import Log
+from adistools.adisconfig import adisconfig
+from adistools.log import Log
 
 from flask import Response as Flask_Response
 
@@ -82,7 +82,7 @@ class API:
             
             rsp=Response()
             rsp.status='Error'
-            rsp.status='Internal Server Error - During processing this request exception occured. Try agin later'
+            rsp.status='Internal Server Error - During processing this request exception occured. Try again later'
 
             return Flask_Response(rsp, mimetype='application/json', status=500)
     
