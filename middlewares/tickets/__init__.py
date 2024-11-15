@@ -45,7 +45,7 @@ class Tickets:
         del user['password_hash']
         del ticket['user_uuid']
         ticket['user']=user
-        self.log.success(f'Obtained ticket({ticket['ticket_uuid']}, {ticket['ticket_title']})')
+        self.log.success(f"Obtained ticket({ticket['ticket_uuid']}, {ticket['ticket_title']})")
         return ticket
 
     def get_ticket_messages(self, ticket_uuid: str):
@@ -61,7 +61,7 @@ class Tickets:
             del item['user_uuid']
             item['user']=user
             del item['_id']
-        self.log.success(f'Obtained messages of a ticket({ticket['ticket_uuid']}, {ticket['ticket_title']})')
+        self.log.success(f"Obtained messages of a ticket({ticket['ticket_uuid']}, {ticket['ticket_title']})")
         return messages
 
     def create_ticket(self, ticket_title: str, session_uuid: str):
@@ -79,7 +79,7 @@ class Tickets:
             )
         del document['_id']
 
-        self.log.success(f'Ticket({ticket_uuid}, {ticket_title}) created.')
+        self.log.success(f"Ticket({ticket_uuid}, {ticket_title}) created.")
         return document
 
     def add_ticket_message(self, ticket_uuid: str, session_uuid: str, message:str):
@@ -110,7 +110,7 @@ class Tickets:
 
         document['user']=user
 
-        self.log.success(f'Message to the ticket({ticket_uuid}, {ticket['ticket_title']}) added.')
+        self.log.success(f"Message to the ticket({ticket_uuid}, {ticket['ticket_title']}) added.")
         return document
 
 
