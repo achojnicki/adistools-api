@@ -51,3 +51,9 @@ class ValidationError(FormValidatorException):
 
 class FormNotDefined(FormValidatorException):
     pass
+
+class TicketsException(Exception):
+    pass
+
+class TicketDoesntExists(TicketsException):
+    pass

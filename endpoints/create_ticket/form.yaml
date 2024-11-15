@@ -1,0 +1,11 @@
+session_uuid:
+  required: true
+  allow_empty: false
+
+ticket_title:
+  required: true
+  allow_empty: false
+
+ticket_message:
+  required: true
+  allow_empty: false

@@ -12,7 +12,12 @@ from endpoints import (
     pixel_trackers,
     pixel_tracker_metrics,
     create_pixel_tracker,
-    delete_pixel_tracker
+    delete_pixel_tracker,
+    create_ticket,
+    tickets,
+    ticket,
+    ticket_messages,
+    add_ticket_message
     )
 
 class Endpoints(login.login,
@@ -28,7 +33,13 @@ class Endpoints(login.login,
     pixel_trackers.pixel_trackers,
     pixel_tracker_metrics.pixel_tracker_metrics,
     create_pixel_tracker.create_pixel_tracker,
-    delete_pixel_tracker.delete_pixel_tracker
+    delete_pixel_tracker.delete_pixel_tracker,
+    create_ticket.create_ticket,
+    tickets.tickets,
+    ticket.ticket,
+    ticket_messages.ticket_messages,
+    add_ticket_message.add_ticket_message
+
     ):
     def __init__(self, root):
         self._root=root
@@ -49,5 +60,10 @@ class Endpoints(login.login,
             self.pixel_trackers,
             self.pixel_tracker_metrics,
             self.create_pixel_tracker,
-            self.delete_pixel_tracker
+            self.delete_pixel_tracker,
+            self.create_ticket,
+            self.tickets,
+            self.ticket,
+            self.ticket_messages,
+            self.add_ticket_message
             ]

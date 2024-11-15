@@ -12,4 +12,5 @@ def router(destination):
 
 @application.errorhandler(Exception)
 def error_handler(error):
+   
     return api.error(error)
